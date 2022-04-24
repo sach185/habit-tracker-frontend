@@ -27,7 +27,7 @@ export const registerUser = createAsyncThunk(
         `${SERVER_URL}/user/register`,
         userInfo
       );
-      localStorage.setItem("user_info", JSON.stringify(response.data));
+      localStorage.setItem("user_info", JSON.stringify(response.data.user));
       return response.data;
     } catch (error) {
       const { rejectWithValue } = thunkAPI;
@@ -48,7 +48,7 @@ export const loginUser = createAsyncThunk(
     try {
       // make API call to /login
       const response = await Axios.post(`${SERVER_URL}/user/login`, userInfo);
-      localStorage.setItem("user_info", JSON.stringify(response.data));
+      localStorage.setItem("user_info", JSON.stringify(response.data.user));
       return response.data;
     } catch (error) {
       const { rejectWithValue } = thunkAPI;
