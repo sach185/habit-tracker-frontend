@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { registerUser, resetRegisterState } from "slices/UserSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { validateEmail } from "helper/helper";
 
 const PageContainer = styled.div`
   padding-top: 10px;
@@ -111,6 +112,8 @@ const Register = () => {
     passwordConfirmation: "",
   });
 
+  const [valError, setValError] = useState(null);
+
   const userState = useSelector((state) => state.user);
   const { error } = userState.registerState;
   const { loggedInUser } = userState;
@@ -125,8 +128,38 @@ const Register = () => {
 
   const dispatch = useDispatch();
 
+  const validateInputs = () => {
+    const { firstName, lastName, email, password, passwordConfirmation } =
+      userInfo;
+
+    if (!firstName && !lastName && !email) {
+      setValError("All fields are mandatory");
+      return false;
+    } else if (!password) {
+      setValError("Please enter a password");
+      return false;
+    } else if (!firstName) {
+      setValError("Please enter First name");
+      return false;
+    } else if (!lastName) {
+      setValError("Please enter Last name");
+      return false;
+    } else if (!email) {
+      setValError("Please enter a valid email");
+      return false;
+    } else if (password !== passwordConfirmation) {
+      setValError("Password do not match");
+      return false;
+    } else if (!validateEmail(email)) {
+      setValError("Invalid Email Address");
+      return false;
+    }
+
+    return true;
+  };
+
   const handleSubmit = () => {
-    dispatch(registerUser(userInfo));
+    validateInputs() && dispatch(registerUser(userInfo));
   };
 
   const navigate = useNavigate();
@@ -138,11 +171,6 @@ const Register = () => {
     }
   }, [loggedInUser, navigate]);
 
-  const findError = (sectionName) => {
-    const errorObj = error.find((err) => err.param === sectionName);
-    return errorObj ? errorObj.msg : null;
-  };
-
   const handleResetState = () => {
     dispatch(resetRegisterState());
   };
@@ -152,63 +180,63 @@ const Register = () => {
       <PageTitle>Habit Tracker</PageTitle>
       <RegisterContainer>
         <FormTitle>Register</FormTitle>
-        {error && <ErrorSection>{findError("registrationError")}</ErrorSection>}
+        {(error || valError) && (
+          <ErrorSection>{valError || error.message}</ErrorSection>
+        )}
         <FormContainer>
           <InputSection>
             <label htmlFor="firstName">First Name</label>
-            {error && <ErrorSection>{findError("firstName")}</ErrorSection>}
             <input
               type="text"
               id="firstName"
               placeholder="First Name"
               maxLength="60"
               onChange={handleUserInfoChange}
+              required
             />
           </InputSection>
           <InputSection>
             <label htmlFor="lastName">Last Name</label>
-            {error && <ErrorSection>{findError("lastName")}</ErrorSection>}
             <input
               type="text"
               id="lastName"
               placeholder="Last Name"
               maxLength="60"
               onChange={handleUserInfoChange}
+              required
             />
           </InputSection>
           <InputSection>
             <label htmlFor="email">Email</label>
-            {error && <ErrorSection>{findError("email")}</ErrorSection>}
             <input
               type="text"
               id="email"
               placeholder="Email"
               maxLength="100"
               onChange={handleUserInfoChange}
+              required
             />
           </InputSection>
           <InputSection>
             <label htmlFor="password">Password</label>
-            {error && <ErrorSection>{findError("password")}</ErrorSection>}
             <input
               type="password"
               id="password"
               placeholder="Password"
               maxLength="128"
               onChange={handleUserInfoChange}
+              required
             />
           </InputSection>
           <InputSection>
             <label htmlFor="passwordConfirmation">Confirm Password</label>
-            {error && (
-              <ErrorSection>{findError("passwordConfirmation")}</ErrorSection>
-            )}
             <input
               type="password"
               id="passwordConfirmation"
               placeholder="Confirm Password"
               maxLength="128"
               onChange={handleUserInfoChange}
+              required
             />
           </InputSection>
           <ButtonContainer>
