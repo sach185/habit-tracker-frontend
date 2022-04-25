@@ -49,7 +49,7 @@ export const loginUser = createAsyncThunk(
       // make API call to /login
       const response = await Axios.post(`${SERVER_URL}/user/login`, userInfo);
       localStorage.setItem("user_info", JSON.stringify(response.data.user));
-      return response.data;
+      return response.data.user;
     } catch (error) {
       const { rejectWithValue } = thunkAPI;
       return rejectWithValue(error.response.data);
@@ -70,6 +70,11 @@ const userSlice = createSlice({
     },
     resetLoginState: (state) => {
       state.loginState = initUserState.loginState;
+    },
+    updateGoalLimit: (state) => {
+      let loggedinUser = initUserState.loggedInUser;
+      state.loggedInUser.goalLimit = loggedinUser.goalLimit + 1;
+      localStorage.setItem("user_info", JSON.stringify(state.loggedInUser));
     },
   },
   extraReducers: {
@@ -98,7 +103,6 @@ const userSlice = createSlice({
       }
     },
     [loginUser.pending]: (state, action) => {
-      console.log("******* PENDING CALLED *********", action);
       const { loginState } = state;
       if (loginState.loading === "idle") {
         loginState.loading = "pending";
@@ -106,7 +110,6 @@ const userSlice = createSlice({
       }
     },
     [loginUser.fulfilled]: (state, action) => {
-      console.log("******* FULFILLED CALLED *********");
       const { loginState } = state;
       if (loginState.loading === "pending") {
         loginState.loading = "idle";
@@ -116,7 +119,6 @@ const userSlice = createSlice({
       }
     },
     [loginUser.rejected]: (state, action) => {
-      console.log("******* REJECTED CALLED *********");
       const { loginState } = state;
       if (loginState.loading === "pending") {
         loginState.loading = "idle";
@@ -127,6 +129,10 @@ const userSlice = createSlice({
   },
 });
 
-export const { logoutUser, resetRegisterState, resetLoginState } =
-  userSlice.actions;
+export const {
+  logoutUser,
+  resetRegisterState,
+  resetLoginState,
+  updateGoalLimit,
+} = userSlice.actions;
 export default userSlice.reducer;

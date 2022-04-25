@@ -19,7 +19,16 @@ const InnerDeleteGoalButton = styled.div`
 const ModalContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 375px;
+
+  @media only screen and (max-width: 699px) {
+    width: 275px;
+  }
+
+  @media only screen and (min-width: 700px) {
+    justify-content: flex-start;
+    margin-left: 20px;
+    width: 375px;
+  }
 `;
 
 const ModalTitle = styled.div`

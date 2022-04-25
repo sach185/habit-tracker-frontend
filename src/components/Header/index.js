@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { logoutUser } from "slices/UserSlice";
@@ -87,6 +87,22 @@ const RegisterButton = styled(Link)`
 const Header = () => {
   const userState = useSelector((state) => state.user);
   const { loggedInUser } = userState;
+
+  useEffect(() => {
+    let taskList = JSON.parse(localStorage.getItem("todaysTask"));
+    if (taskList) {
+      let newArr = taskList.filter((item) => {
+        let storedDate = item.date;
+        let today = new Date();
+        let todaysDate = `${today.getDate()}-${today.getMonth()}-${today.getFullYear()}`;
+
+        return storedDate === todaysDate;
+      });
+      if (taskList.length !== newArr.length)
+        localStorage.setItem("todaysTask", JSON.stringify(newArr));
+    }
+  }, []);
+
   const dispatch = useDispatch();
 
   const handleLogout = () => {

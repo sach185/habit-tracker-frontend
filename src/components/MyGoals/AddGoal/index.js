@@ -8,7 +8,7 @@ const InnerAddGoalButton = styled.div`
   text-transform: uppercase;
   display: flex;
   align-items: center;
-  width: 100%;
+  width: ${(props) => (props.isUpdate ? "auto" : "100%")};
   cursor: pointer;
   img {
     height: ${(props) => (props.isUpdate ? "15px" : "auto")};
