@@ -112,6 +112,7 @@ const Login = () => {
   const userState = useSelector((state) => state.user);
   const { error } = userState.loginState;
   const { loggedInUser } = userState;
+  const [valError, setValError] = useState(null);
 
   const handleUserInfoChange = (e) => {
     const { id, value } = e.target;
@@ -124,7 +125,7 @@ const Login = () => {
   const dispatch = useDispatch();
 
   const handleSubmit = () => {
-    dispatch(loginUser(userInfo));
+    validateInputs() && dispatch(loginUser(userInfo));
   };
 
   const navigate = useNavigate();
@@ -140,12 +141,28 @@ const Login = () => {
     dispatch(resetLoginState());
   };
 
+  const validateInputs = () => {
+    const { email, password } = userInfo;
+
+    if (!email) {
+      setValError("Please enter a valid email");
+      return false;
+    } else if (!password) {
+      setValError("Please enter a password");
+      return false;
+    }
+
+    return true;
+  };
+
   return (
     <PageContainer>
       <PageTitle>Habit Tracker</PageTitle>
       <LoginContainer>
         <FormTitle>Login</FormTitle>
-        {error && <ErrorSection>{error.message}</ErrorSection>}
+        {(error || valError) && (
+          <ErrorSection>{valError || error.message}</ErrorSection>
+        )}
         <FormContainer>
           <InputSection>
             <label htmlFor="email">Email</label>
