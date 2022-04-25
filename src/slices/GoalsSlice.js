@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import Axios from "axios";
+import { SERVER_URL } from "helper/constants";
 
 const initGoalsState = {
   goalsList: [],
@@ -12,7 +13,7 @@ export const getGoals = createAsyncThunk(
   async (userId, thunkAPI) => {
     //call the api to get all goals
     try {
-      const response = await Axios.get(`/goals/${userId}`);
+      const response = await Axios.get(`${SERVER_URL}/goals/${userId}`);
       return response.data;
     } catch (error) {
       const { rejectWithValue } = thunkAPI;
@@ -25,7 +26,7 @@ export const createGoal = createAsyncThunk(
   "goals/create",
   async (payload, thunkAPI) => {
     try {
-      const response = await Axios.post("/goals", payload);
+      const response = await Axios.post(`${SERVER_URL}/goals`, payload);
       return response.data;
     } catch (error) {
       const { rejectWithValue } = thunkAPI;
@@ -39,7 +40,7 @@ export const deleteGoal = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const { userId, goalId } = payload;
-      await Axios.delete(`/goals/delete/${userId}/${goalId}`);
+      await Axios.delete(`${SERVER_URL}/goals/${userId}/${goalId}`);
       const { dispatch } = thunkAPI;
       dispatch(getGoals(payload));
       return;

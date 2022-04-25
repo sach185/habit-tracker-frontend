@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Welcome from "components/Welcome";
-import MyHabits from "components/MyHabits";
+import MyGoals from "components/MyGoals";
 import Header from "components/Header";
 import styled from "styled-components";
 import Login from "components/User/Login";
@@ -37,7 +37,7 @@ function App() {
           <InnerRoot>
             <Routes>
               <Route path="/" element={<Welcome />} exact />
-              <Route path="/habits" element={<MyHabits />} exact />
+              <Route path="/habits" element={<MyGoals />} exact />
               <Route path="/login" element={<Login />} exact />
               <Route path="/register" element={<Register />} />
             </Routes>

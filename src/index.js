@@ -4,14 +4,14 @@ import App from "./App";
 import store from "./app/store";
 import { Provider } from "react-redux";
 import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-const rootElement = document.getElementById("root");
-const root = createRoot(rootElement);
+import ReactDOM from "react-dom";
+import "react-responsive-modal/styles.css";
 
-root.render(
+ReactDOM.render(
   <StrictMode>
     <Provider store={store}>
       <App />
     </Provider>
-  </StrictMode>
+  </StrictMode>,
+  document.getElementById("root")
 );

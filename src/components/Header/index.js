@@ -20,7 +20,7 @@ const InnerRoot = styled.div`
   padding: 10px 10px 10px 30px;
   color: #0f151f;
   align-items: center;
-  gap: 20px;
+  gap: 12px;
 `;
 
 const MyLink = styled(Link)`
