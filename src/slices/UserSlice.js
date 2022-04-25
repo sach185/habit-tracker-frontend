@@ -28,7 +28,7 @@ export const registerUser = createAsyncThunk(
         userInfo
       );
       localStorage.setItem("user_info", JSON.stringify(response.data.user));
-      return response.data;
+      return response.data.user;
     } catch (error) {
       const { rejectWithValue } = thunkAPI;
       return rejectWithValue(error.response.data);
