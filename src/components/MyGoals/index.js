@@ -165,7 +165,7 @@ const MyGoals = () => {
     if (loggedInUser) {
       dispatch(getGoals(loggedInUser._id));
     }
-  }, []);
+  }, [dispatch, loggedInUser]);
 
   if (!loggedInUser) {
     return <div style={{ padding: "50px" }}>Please Login to continue</div>;
