@@ -27,6 +27,11 @@ export const createGoal = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await Axios.post(`${SERVER_URL}/goals`, payload);
+      if (payload.goalId) {
+        const { dispatch } = thunkAPI;
+        dispatch(getGoals(payload.userId));
+        return;
+      }
       return response.data;
     } catch (error) {
       const { rejectWithValue } = thunkAPI;
@@ -42,7 +47,7 @@ export const deleteGoal = createAsyncThunk(
       const { userId, goalId } = payload;
       await Axios.delete(`${SERVER_URL}/goals/${userId}/${goalId}`);
       const { dispatch } = thunkAPI;
-      dispatch(getGoals(payload));
+      dispatch(getGoals(userId));
       return;
     } catch (error) {
       const { rejectWithValue } = thunkAPI;
@@ -64,7 +69,7 @@ const goalsSlice = createSlice({
     [getGoals.fulfilled]: (state, action) => {
       if (state.loading === "pending") {
         state.loading = "idle";
-        state.goalsList = action.payload.data;
+        state.goalsList = [...action.payload.data];
       }
     },
     [getGoals.rejected]: (state, action) => {
@@ -79,7 +84,7 @@ const goalsSlice = createSlice({
       }
     },
     [createGoal.fulfilled]: (state, action) => {
-      if (state.loading === "pending") {
+      if (action.payload && state.loading === "pending") {
         state.loading = "idle";
         state.goalsList = action.payload.goals;
       }
@@ -93,11 +98,6 @@ const goalsSlice = createSlice({
     [deleteGoal.pending]: (state) => {
       if (state.loading === "idle") {
         state.loading = "pending";
-      }
-    },
-    [deleteGoal.fulfilled]: (state) => {
-      if (state.loading === "pending") {
-        state.loading = "idle";
       }
     },
     [deleteGoal.rejected]: (state, action) => {

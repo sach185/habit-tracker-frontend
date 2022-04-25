@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { getGoals } from "slices/GoalsSlice";
 import AddGoal from "./AddGoal";
-import UpdateGoal from "./UpdateGoal";
 import DeleteGoal from "./DeleteGoal";
 
 const GoalsContainer = styled.div`
@@ -18,6 +17,7 @@ const GoalsContainer = styled.div`
     padding: 20px 10px;
   }
 `;
+
 const GoalsHeader = styled.div`
   display: flex;
   justify-content: space-between;
@@ -51,7 +51,7 @@ const GoalRow = styled.div`
   padding: 10px 15px;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 30px 30px 50px;
-
+  border-radius: 10px;
   :last-child {
     margin-bottom: 0;
   }
@@ -89,16 +89,19 @@ const Action = styled.div`
 const UpdateTaskBtn = styled.button`
   background-color: #9da631;
   border: none;
-  border-radius: 20px;
+  border-radius: 10px;
   color: white;
   padding: 8px 0px;
+  width: 150px;
 `;
 
 const CompletedDiv = styled.div`
   grid-column: 1/-1;
+  color: gray;
 
   @media only screen and (max-width: 699px) {
     font-size: 15px;
+    letter-spacing: 0.5px;
   }
 
   @media only screen and (min-width: 700px) {
@@ -141,7 +144,13 @@ const MyGoals = () => {
               <GoalRow key={`goal-number-` + goal._id}>
                 <Name>{goal.name}</Name>
                 <Action>
-                  <UpdateGoal goalId={goal._id} />
+                  <AddGoal
+                    isUpdate={true}
+                    goalId={goal._id}
+                    goalName={goal.name}
+                    goalFrequency={goal.weeklyFrequency}
+                    goalTimeSlot={goal.timeSlot}
+                  />
                   <DeleteGoal goalId={goal._id} goalName={goal.name} />
                 </Action>
                 <CompletedDiv>

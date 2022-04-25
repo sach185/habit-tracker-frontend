@@ -11,6 +11,7 @@ const InnerAddGoalButton = styled.div`
   width: 100%;
   cursor: pointer;
   img {
+    height: ${(props) => (props.isUpdate ? "15px" : "auto")};
     max-width: 16px;
     margin-right: 8px;
   }
@@ -29,12 +30,28 @@ const InnerAddGoalButton = styled.div`
 const ModalContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 375px;
+
+  @media only screen and (max-width: 699px) {
+    width: 275px;
+  }
+
+  @media only screen and (min-width: 700px) {
+    justify-content: flex-start;
+    margin-left: 20px;
+    width: 375px;
+  }
 `;
 
 const ModalTitle = styled.div`
-  font-size: 30px;
   margin-bottom: 20px;
+
+  @media only screen and (max-width: 699px) {
+    font-size: 20px;
+  }
+
+  @media only screen and (min-width: 700px) {
+    font-size: 30px;
+  }
 `;
 
 const InputSection = styled.div`
@@ -43,6 +60,7 @@ const InputSection = styled.div`
   margin-bottom: 15px;
   label {
     margin-bottom: 5px;
+    font-size: 15px;
   }
   input {
     padding: 5px;
@@ -56,6 +74,8 @@ const InputSection = styled.div`
 
 const ErrorSection = styled.div`
   color: red;
+  font-size: 15px;
+  margin-bottom: 10px;
 `;
 
 const ButtonContainer = styled.div`
@@ -79,55 +99,124 @@ const SubmitButton = styled.div`
   }
 `;
 
-const AddGoal = () => {
+const AddGoal = ({
+  isUpdate,
+  goalName,
+  goalFrequency,
+  goalTimeSlot,
+  goalId,
+}) => {
   const [showModal, setShowModal] = useState(false);
-  const [showError, setShowError] = useState(false);
-  const [goalName, setGoalName] = useState("");
+  const [error, setError] = useState(null);
+  const [goalInfo, setGoalInfo] = useState({
+    name: goalName || "",
+    weeklyFrequency: goalFrequency || "",
+    timeSlot: goalTimeSlot || "",
+  });
+
+  const handleGoalInfoChange = (e) => {
+    const { id, value } = e.target;
+    setGoalInfo((currentState) => ({
+      ...currentState,
+      [id]: value,
+    }));
+  };
 
   const userState = useSelector((state) => state.user);
   const { loggedInUser } = userState;
 
   const openModal = () => setShowModal(true);
   const closeModal = () => {
-    setShowError(false);
+    setError(null);
+    if (!isUpdate) setGoalInfo({ name: "", weeklyFrequency: "", timeSlot: "" });
     setShowModal(false);
   };
 
   const dispatch = useDispatch();
 
   const handleSubmit = () => {
-    if (!goalName) {
-      setShowError(true);
+    let { name, weeklyFrequency, timeSlot } = goalInfo;
+    setError(null);
+    if (!name) {
+      setError("Please enter a goal name");
+      return;
+    } else if (
+      !weeklyFrequency ||
+      weeklyFrequency < 3 ||
+      weeklyFrequency > 10
+    ) {
+      setError("Please enter number of times between 3 and 10");
+      return;
+    } else if (!timeSlot) {
+      setError("Please enter a time slot");
       return;
     }
     // dispatch create goal action TODO
-    const payload = { userId: loggedInUser._id, name: goalName };
+    const payload = {
+      userId: loggedInUser._id,
+      name,
+      weeklyFrequency,
+      timeSlot,
+    };
+
+    if (isUpdate) {
+      payload.goalId = goalId;
+    }
+
     dispatch(createGoal(payload));
   };
 
   return (
     <>
-      <InnerAddGoalButton onClick={openModal}>
-        <img src="add.svg" alt="add-goal-btn" />
-        add a goal
+      <InnerAddGoalButton isUpdate={isUpdate} onClick={openModal}>
+        <img src={`${isUpdate ? "edit.svg" : "add.svg"}`} alt="add-goal-btn" />
+        {isUpdate ? "" : "Add a Goal"}
       </InnerAddGoalButton>
       <Modal open={showModal} onClose={closeModal} center>
         <ModalContentContainer>
-          <ModalTitle>Create a New Goal</ModalTitle>
+          <ModalTitle>
+            {isUpdate ? "Update Goal" : "Create a New Goal"}
+          </ModalTitle>
+          {error && <ErrorSection>{error}</ErrorSection>}
           <InputSection>
-            <label htmlFor="createGoal">Enter a goal name</label>
-            {showError && <ErrorSection>Enter a goal name</ErrorSection>}
+            <label htmlFor="name">Enter a goal name</label>
             <input
               type="text"
-              id="goalName"
+              id="name"
               placeholder="Goal Name"
               maxLength="50"
-              onChange={(e) => setGoalName(e.target.value)}
+              onChange={handleGoalInfoChange}
+              required
+              value={goalInfo.name}
+            />
+          </InputSection>
+          <InputSection>
+            <label htmlFor="weeklyFrequency">Times in a week</label>
+            <input
+              type="number"
+              id="weeklyFrequency"
+              placeholder="How many times in a week?"
+              onChange={handleGoalInfoChange}
+              min="3"
+              max="10"
+              required
+              value={goalInfo.weeklyFrequency}
+            />
+          </InputSection>
+          <InputSection>
+            <label htmlFor="timeSlot">Choose a time slot</label>
+            <input
+              type="time"
+              id="timeSlot"
+              name="timeSlot"
+              onChange={handleGoalInfoChange}
+              required
+              value={goalInfo.timeSlot}
             />
           </InputSection>
           <ButtonContainer>
             <SubmitButton type="submit" onClick={handleSubmit}>
-              Create Goal
+              {isUpdate ? "Update Goal" : "Create Goal"}
             </SubmitButton>
           </ButtonContainer>
         </ModalContentContainer>
