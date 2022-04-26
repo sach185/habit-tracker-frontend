@@ -151,6 +151,7 @@ const GoalComplete = styled.div`
   letter-spacing: 0.5px;
 `;
 
+//Habits page. Displays list of user goals.
 const MyGoals = () => {
   const dispatch = useDispatch();
 
@@ -163,6 +164,7 @@ const MyGoals = () => {
 
   useEffect(() => {
     if (loggedInUser) {
+      //dispatch action to get all goals
       dispatch(getGoals(loggedInUser.token));
     }
   }, [dispatch, loggedInUser]);
@@ -173,6 +175,7 @@ const MyGoals = () => {
 
   let showAddBtn = goalsList && goalsList.length < loggedInUser.goalLimit;
 
+  //update task for today
   const handleUpdate = (goal) => {
     taskArray = JSON.parse(localStorage.getItem("todaysTask")) || [];
 
@@ -184,6 +187,7 @@ const MyGoals = () => {
     });
     localStorage.setItem("todaysTask", JSON.stringify(taskArray));
 
+    //update goal count
     let goalCount = goal.goalCount + 1;
     let payload = {
       token: loggedInUser.token,
@@ -191,11 +195,14 @@ const MyGoals = () => {
       goalCount: goalCount,
       updateCount: true,
     };
+
+    //check if eligible for reward
     if (!goal.reward && goalCount >= goal.weeklyFrequency) {
       payload.reward = true;
       dispatch(updateGoalLimit());
     }
 
+    //dispatch action for updating goal
     dispatch(createGoal(payload));
   };
 

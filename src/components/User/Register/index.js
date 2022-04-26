@@ -103,6 +103,7 @@ const ErrorSection = styled.div`
   color: red;
 `;
 
+//user registration page
 const Register = () => {
   const [userInfo, setUserInfo] = useState({
     firstName: "",
@@ -128,6 +129,7 @@ const Register = () => {
 
   const dispatch = useDispatch();
 
+  //form validation
   const validateInputs = () => {
     const { firstName, lastName, email, password, passwordConfirmation } =
       userInfo;
@@ -158,6 +160,7 @@ const Register = () => {
     return true;
   };
 
+  //validate and dispatch call for user registration
   const handleSubmit = () => {
     validateInputs() && dispatch(registerUser(userInfo));
   };
@@ -166,7 +169,7 @@ const Register = () => {
 
   useEffect(() => {
     if (loggedInUser) {
-      // redirect
+      //redirect on successful registration
       navigate("/habits");
     }
   }, [loggedInUser, navigate]);

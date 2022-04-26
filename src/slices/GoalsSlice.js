@@ -2,16 +2,17 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import Axios from "axios";
 import { SERVER_URL } from "helper/constants";
 
+//initial state of goals reducer
 const initGoalsState = {
   goalsList: [],
   loading: "idle",
   error: null,
 };
 
+//call the api to get all goals
 export const getGoals = createAsyncThunk(
   "goals/get",
   async (token, thunkAPI) => {
-    //call the api to get all goals
     try {
       const response = await Axios.get(`${SERVER_URL}/goals`, {
         headers: { Authorization: "Bearer " + token },
@@ -24,6 +25,7 @@ export const getGoals = createAsyncThunk(
   }
 );
 
+//call the api to create or update a goal
 export const createGoal = createAsyncThunk(
   "goals/create",
   async (payload, thunkAPI) => {
@@ -46,6 +48,7 @@ export const createGoal = createAsyncThunk(
   }
 );
 
+//call the api to delete a goal
 export const deleteGoal = createAsyncThunk(
   "goals/delete",
   async (payload, thunkAPI) => {
@@ -64,6 +67,7 @@ export const deleteGoal = createAsyncThunk(
   }
 );
 
+//Goal slice setup - state, actions, reducer
 const goalsSlice = createSlice({
   name: "goals",
   initialState: initGoalsState,

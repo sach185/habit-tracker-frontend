@@ -28,9 +28,11 @@ const InnerRoot = styled.div`
   max-width: 1200px;
   flex-direction: column;
 `;
+
 function App() {
   return (
     <>
+      {/* setup routes */}
       <BrowserRouter>
         <Header />
         <BodyRoot>

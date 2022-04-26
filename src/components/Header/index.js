@@ -84,11 +84,13 @@ const RegisterButton = styled(Link)`
   }
 `;
 
+//Header for the website
 const Header = () => {
   const userState = useSelector((state) => state.user);
   const { loggedInUser } = userState;
 
   useEffect(() => {
+    //Reset your current tasks for the day
     let taskList = JSON.parse(localStorage.getItem("todaysTask"));
     if (taskList) {
       let newArr = taskList.filter((item) => {
@@ -109,6 +111,7 @@ const Header = () => {
     dispatch(logoutUser());
   };
 
+  //Show header options depending on login state
   return (
     <Root className="root">
       <InnerRoot>

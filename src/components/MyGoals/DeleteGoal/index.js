@@ -74,6 +74,7 @@ const SubmitButton = styled.div`
   }
 `;
 
+//modal for deleting a goal
 const DeleteGoal = ({ goalId, goalName }) => {
   const [showModal, setShowModal] = useState(false);
 
@@ -84,9 +85,8 @@ const DeleteGoal = ({ goalId, goalName }) => {
   const closeModal = () => setShowModal(false);
 
   const dispatch = useDispatch();
-
+  // dispatch delete goal action
   const handleSubmit = () => {
-    // dispatch create goal action
     const payload = { token: loggedInUser.token, goalId: goalId };
     dispatch(deleteGoal(payload));
   };

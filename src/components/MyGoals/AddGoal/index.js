@@ -99,6 +99,7 @@ const SubmitButton = styled.div`
   }
 `;
 
+//modal for adding or updating a goal
 const AddGoal = ({
   isUpdate,
   goalName,
@@ -134,6 +135,7 @@ const AddGoal = ({
 
   const dispatch = useDispatch();
 
+  // dispatch create or update goal action
   const handleSubmit = () => {
     let { name, weeklyFrequency, timeSlot } = goalInfo;
     setError(null);
@@ -151,7 +153,7 @@ const AddGoal = ({
       setError("Please enter a time slot");
       return;
     }
-    // dispatch create goal action TODO
+
     const payload = {
       token: loggedInUser.token,
       name,

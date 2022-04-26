@@ -113,6 +113,7 @@ const ErrorSection = styled.div`
   margin-bottom: 10px;
 `;
 
+//user login page
 const Login = () => {
   const [userInfo, setUserInfo] = useState({
     email: "",
@@ -134,6 +135,7 @@ const Login = () => {
 
   const dispatch = useDispatch();
 
+  //validate and dispatch call for the login api
   const handleSubmit = () => {
     validateInputs() && dispatch(loginUser(userInfo));
   };
@@ -142,7 +144,7 @@ const Login = () => {
 
   useEffect(() => {
     if (loggedInUser) {
-      // redirect
+      // redirect on login
       navigate("/habits");
     }
   }, [loggedInUser, navigate]);
@@ -151,6 +153,7 @@ const Login = () => {
     dispatch(resetLoginState());
   };
 
+  //form validations
   const validateInputs = () => {
     const { email, password } = userInfo;
 

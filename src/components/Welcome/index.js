@@ -106,6 +106,7 @@ const ImageItem = styled.img`
   height: 40px;
 `;
 
+//Landing page
 const Welcome = (props) => {
   return (
     <Root>

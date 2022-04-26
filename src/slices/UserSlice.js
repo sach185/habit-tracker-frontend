@@ -2,15 +2,18 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import Axios from "axios";
 import { SERVER_URL } from "helper/constants";
 
+//check if user info exists in local storage to maintain login state
 const userInfoString = localStorage.getItem("user_info");
 const currentUserInfo = userInfoString ? JSON.parse(userInfoString) : null;
 
+//initial state of user reducer
 const initUserState = {
   loggedInUser: currentUserInfo,
   registerState: { loading: "idle", error: null, currentRequestID: undefined },
   loginState: { loading: "idle", error: null, currentRequestID: undefined },
 };
 
+//make API call to register user
 export const registerUser = createAsyncThunk(
   "user/register",
   async (userInfo, thunkAPI) => {
@@ -22,7 +25,6 @@ export const registerUser = createAsyncThunk(
     }
 
     try {
-      // make API call to /register
       const response = await Axios.post(
         `${SERVER_URL}/user/register`,
         userInfo
@@ -36,6 +38,7 @@ export const registerUser = createAsyncThunk(
   }
 );
 
+//make API call to login user
 export const loginUser = createAsyncThunk(
   "user/login",
   async (userInfo, thunkAPI) => {
@@ -46,7 +49,6 @@ export const loginUser = createAsyncThunk(
     }
 
     try {
-      // make API call to /login
       const response = await Axios.post(`${SERVER_URL}/user/login`, userInfo);
       localStorage.setItem("user_info", JSON.stringify(response.data.user));
       return response.data.user;
@@ -57,6 +59,7 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+//User slice setup - state, actions, reducer
 const userSlice = createSlice({
   name: "user",
   initialState: initUserState,
