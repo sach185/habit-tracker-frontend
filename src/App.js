@@ -8,8 +8,9 @@ import Login from "components/User/Login";
 import Register from "components/User/Register";
 
 const Footer = styled.div`
-  height: 200px;
+  min-height: 200px;
   background-color: #fcfcf7;
+  margin-top: auto;
 `;
 
 const BodyRoot = styled.div`
@@ -18,8 +19,9 @@ const BodyRoot = styled.div`
   flex-wrap: wrap;
   box-sizing: border-box;
   justify-content: center;
-  min-height: 100vh;
+  padding-bottom: 50px;
 `;
+
 const InnerRoot = styled.div`
   width: 100%;
   display: flex;
