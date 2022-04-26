@@ -153,7 +153,7 @@ const AddGoal = ({
     }
     // dispatch create goal action TODO
     const payload = {
-      userId: loggedInUser._id,
+      token: loggedInUser.token,
       name,
       weeklyFrequency,
       timeSlot,
@@ -164,6 +164,7 @@ const AddGoal = ({
     }
 
     dispatch(createGoal(payload));
+    closeModal();
   };
 
   return (

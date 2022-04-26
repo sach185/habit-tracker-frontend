@@ -163,7 +163,7 @@ const MyGoals = () => {
 
   useEffect(() => {
     if (loggedInUser) {
-      dispatch(getGoals(loggedInUser._id));
+      dispatch(getGoals(loggedInUser.token));
     }
   }, [dispatch, loggedInUser]);
 
@@ -186,7 +186,7 @@ const MyGoals = () => {
 
     let goalCount = goal.goalCount + 1;
     let payload = {
-      userId: loggedInUser._id,
+      token: loggedInUser.token,
       goalId: goal._id,
       goalCount: goalCount,
       updateCount: true,

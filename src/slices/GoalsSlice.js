@@ -10,10 +10,12 @@ const initGoalsState = {
 
 export const getGoals = createAsyncThunk(
   "goals/get",
-  async (userId, thunkAPI) => {
+  async (token, thunkAPI) => {
     //call the api to get all goals
     try {
-      const response = await Axios.get(`${SERVER_URL}/goals/${userId}`);
+      const response = await Axios.get(`${SERVER_URL}/goals`, {
+        headers: { Authorization: "Bearer " + token },
+      });
       return response.data;
     } catch (error) {
       const { rejectWithValue } = thunkAPI;
@@ -26,10 +28,14 @@ export const createGoal = createAsyncThunk(
   "goals/create",
   async (payload, thunkAPI) => {
     try {
-      const response = await Axios.post(`${SERVER_URL}/goals`, payload);
+      let token = payload.token;
+      payload.token = undefined;
+      const response = await Axios.post(`${SERVER_URL}/goals`, payload, {
+        headers: { Authorization: "Bearer " + token },
+      });
       if (payload.goalId) {
         const { dispatch } = thunkAPI;
-        dispatch(getGoals(payload.userId));
+        dispatch(getGoals(token));
         return;
       }
       return response.data;
@@ -44,10 +50,12 @@ export const deleteGoal = createAsyncThunk(
   "goals/delete",
   async (payload, thunkAPI) => {
     try {
-      const { userId, goalId } = payload;
-      await Axios.delete(`${SERVER_URL}/goals/${userId}/${goalId}`);
+      const { token, goalId } = payload;
+      await Axios.delete(`${SERVER_URL}/goals/${goalId}`, {
+        headers: { Authorization: "Bearer " + token },
+      });
       const { dispatch } = thunkAPI;
-      dispatch(getGoals(userId));
+      dispatch(getGoals(token));
       return;
     } catch (error) {
       const { rejectWithValue } = thunkAPI;

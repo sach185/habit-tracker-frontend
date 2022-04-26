@@ -87,7 +87,7 @@ const DeleteGoal = ({ goalId, goalName }) => {
 
   const handleSubmit = () => {
     // dispatch create goal action
-    const payload = { userId: loggedInUser._id, goalId: goalId };
+    const payload = { token: loggedInUser.token, goalId: goalId };
     dispatch(deleteGoal(payload));
   };
 
