@@ -78,17 +78,27 @@ const ButtonContainer = styled.div`
   justify-content: center;
   margin-bottom: 15px;
 `;
-const SubmitButton = styled.div`
+
+const SubmitButton = styled.button`
   background-color: #9da631;
   border: none;
   border-radius: 2px;
   padding: 8px 10px 8px 10px;
+  width: 120px;
   color: white;
+  text-align: center;
   font-size: inherit;
+  font-weight: 500;
+  letter-spacing: 0.5px;
   cursor: pointer;
+
   :focus {
     outline: none;
     border: none;
+  }
+
+  :disabled {
+    background-color: gray;
   }
 `;
 
@@ -110,7 +120,7 @@ const Login = () => {
   });
 
   const userState = useSelector((state) => state.user);
-  const { error } = userState.loginState;
+  const { error, loading } = userState.loginState;
   const { loggedInUser } = userState;
   const [valError, setValError] = useState(null);
 
@@ -185,8 +195,12 @@ const Login = () => {
             />
           </InputSection>
           <ButtonContainer>
-            <SubmitButton type="submit" onClick={handleSubmit}>
-              Sign-in
+            <SubmitButton
+              disabled={loading === "pending"}
+              type="submit"
+              onClick={handleSubmit}
+            >
+              {loading === "pending" ? "Loading..." : "Sign-in"}
             </SubmitButton>
           </ButtonContainer>
         </FormContainer>
