@@ -155,7 +155,7 @@ const MyGoals = () => {
   const dispatch = useDispatch();
 
   const goalState = useSelector((state) => state.goals);
-  const { goalsList, loading } = goalState;
+  const { goalsList } = goalState;
 
   const userState = useSelector((state) => state.user);
   const { loggedInUser } = userState;
