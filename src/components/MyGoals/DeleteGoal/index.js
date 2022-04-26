@@ -94,7 +94,7 @@ const DeleteGoal = ({ goalId, goalName }) => {
   return (
     <>
       <InnerDeleteGoalButton onClick={openModal}>
-        <img src="/delete.svg" alt="add-goal-btn" />
+        <img src="/delete.svg" height="15px" width="15px" alt="add-goal-btn" />
       </InnerDeleteGoalButton>
       <Modal open={showModal} onClose={closeModal} center>
         <ModalContentContainer>

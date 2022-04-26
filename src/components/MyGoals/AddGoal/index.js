@@ -170,7 +170,12 @@ const AddGoal = ({
   return (
     <>
       <InnerAddGoalButton isUpdate={isUpdate} onClick={openModal}>
-        <img src={`${isUpdate ? "edit.svg" : "add.svg"}`} alt="add-goal-btn" />
+        <img
+          src={`${isUpdate ? "edit.svg" : "add.svg"}`}
+          width="15px"
+          height="15px"
+          alt="add-goal-btn"
+        />
         {isUpdate ? "" : "Add a Goal"}
       </InnerAddGoalButton>
       <Modal open={showModal} onClose={closeModal} center>
