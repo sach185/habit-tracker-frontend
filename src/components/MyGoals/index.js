@@ -189,6 +189,7 @@ const MyGoals = () => {
       userId: loggedInUser._id,
       goalId: goal._id,
       goalCount: goalCount,
+      updateCount: true,
     };
     if (!goal.reward && goalCount >= goal.weeklyFrequency) {
       payload.reward = true;
@@ -200,63 +201,59 @@ const MyGoals = () => {
 
   return (
     <GoalsContainer>
-      {loading === "pending" ? (
-        <div>Loading...</div>
-      ) : (
-        <>
-          <GoalsHeader>
-            <TitleSection>
-              {`GOALS ${
-                goalsList && goalsList.length + "/" + loggedInUser.goalLimit
-              }`}
-            </TitleSection>
-            {showAddBtn && <AddGoal />}
-          </GoalsHeader>
-          <RewardInfo>{`Rewards Earned : ${
-            loggedInUser.goalLimit - 4
-          }`}</RewardInfo>
-          <ListContainer>
-            {goalsList &&
-              goalsList.map((goal) => {
-                let isDone = taskArray.find((data) => {
-                  return data.id === goal._id;
-                });
+      <>
+        <GoalsHeader>
+          <TitleSection>
+            {`GOALS ${
+              goalsList && goalsList.length + "/" + loggedInUser.goalLimit
+            }`}
+          </TitleSection>
+          {showAddBtn && <AddGoal />}
+        </GoalsHeader>
+        <RewardInfo>{`Rewards Earned : ${
+          loggedInUser.goalLimit - 4
+        }`}</RewardInfo>
+        <ListContainer>
+          {goalsList &&
+            goalsList.map((goal) => {
+              let isDone = taskArray.find((data) => {
+                return data.id === goal._id;
+              });
 
-                let showBtn = goal.goalCount < goal.weeklyFrequency;
+              let showBtn = goal.goalCount < goal.weeklyFrequency;
 
-                return (
-                  <GoalRow key={`goal-number-` + goal._id}>
-                    <Name>{goal.name}</Name>
-                    <Action>
-                      <AddGoal
-                        isUpdate={true}
-                        goalId={goal._id}
-                        goalName={goal.name}
-                        goalFrequency={goal.weeklyFrequency}
-                        goalTimeSlot={goal.timeSlot}
-                      />
-                      <DeleteGoal goalId={goal._id} goalName={goal.name} />
-                    </Action>
-                    <CompletedDiv>
-                      {`Completed ${goal.goalCount}/${goal.weeklyFrequency} times this week`}
-                    </CompletedDiv>
-                    <CompletedDiv>{`Time slot : ${goal.timeSlot}`}</CompletedDiv>
-                    {showBtn ? (
-                      <UpdateTaskBtn
-                        onClick={() => handleUpdate(goal)}
-                        disabled={isDone}
-                      >
-                        {isDone ? "Done for Today" : "Update For Today"}
-                      </UpdateTaskBtn>
-                    ) : (
-                      <GoalComplete>Goal completed for this week!</GoalComplete>
-                    )}
-                  </GoalRow>
-                );
-              })}
-          </ListContainer>
-        </>
-      )}
+              return (
+                <GoalRow key={`goal-number-` + goal._id}>
+                  <Name>{goal.name}</Name>
+                  <Action>
+                    <AddGoal
+                      isUpdate={true}
+                      goalId={goal._id}
+                      goalName={goal.name}
+                      goalFrequency={goal.weeklyFrequency}
+                      goalTimeSlot={goal.timeSlot}
+                    />
+                    <DeleteGoal goalId={goal._id} goalName={goal.name} />
+                  </Action>
+                  <CompletedDiv>
+                    {`Completed ${goal.goalCount}/${goal.weeklyFrequency} times this week`}
+                  </CompletedDiv>
+                  <CompletedDiv>{`Time slot : ${goal.timeSlot}`}</CompletedDiv>
+                  {showBtn ? (
+                    <UpdateTaskBtn
+                      onClick={() => handleUpdate(goal)}
+                      disabled={isDone}
+                    >
+                      {isDone ? "Done for Today" : "Update For Today"}
+                    </UpdateTaskBtn>
+                  ) : (
+                    <GoalComplete>Goal completed for this week!</GoalComplete>
+                  )}
+                </GoalRow>
+              );
+            })}
+        </ListContainer>
+      </>
     </GoalsContainer>
   );
 };
