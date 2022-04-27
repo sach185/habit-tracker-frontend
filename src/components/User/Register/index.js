@@ -78,7 +78,7 @@ const ButtonContainer = styled.div`
   justify-content: center;
   margin-bottom: 15px;
 `;
-const SubmitButton = styled.div`
+const SubmitButton = styled.button`
   background-color: #9da631;
   border: none;
   border-radius: 2px;
@@ -91,7 +91,6 @@ const SubmitButton = styled.div`
     outline: none;
     border: none;
   }
-
   :disabled {
     background-color: gray;
   }
