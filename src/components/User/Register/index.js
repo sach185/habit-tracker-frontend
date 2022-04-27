@@ -91,6 +91,10 @@ const SubmitButton = styled.div`
     outline: none;
     border: none;
   }
+
+  :disabled {
+    background-color: gray;
+  }
 `;
 
 const StyledLink = styled(Link)`
@@ -116,7 +120,7 @@ const Register = () => {
   const [valError, setValError] = useState(null);
 
   const userState = useSelector((state) => state.user);
-  const { error } = userState.registerState;
+  const { error, loading } = userState.registerState;
   const { loggedInUser } = userState;
 
   const handleUserInfoChange = (e) => {
@@ -243,8 +247,12 @@ const Register = () => {
             />
           </InputSection>
           <ButtonContainer>
-            <SubmitButton type="submit" onClick={handleSubmit}>
-              Register
+            <SubmitButton
+              disabled={loading === "pending"}
+              type="submit"
+              onClick={handleSubmit}
+            >
+              {loading === "pending" ? "Loading..." : "Register"}
             </SubmitButton>
           </ButtonContainer>
         </FormContainer>
