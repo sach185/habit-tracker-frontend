@@ -83,7 +83,7 @@ export const MonthView = ({ selectedYear, onMonthSelect }) => {
 
   let currentMonth = 11
 
-  if (moment(selectedYear).year() == moment(new Date()).year()) {
+  if (moment(selectedYear).year() === moment(new Date()).year()) {
     currentMonth = moment(new Date()).month();
   }
 

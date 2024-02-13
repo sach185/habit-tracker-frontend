@@ -106,7 +106,7 @@ export const DayView = ({ selectedYear, selectedMonth, onDaySelect }) => {
     if (loggedInUser) {
       dispatch(getAllDaysMood({ token: loggedInUser.token, userId: loggedInUser._id, year: moment(selectedYear).year(), month: selectedMonth }));
     }
-  }, [dispatch, loggedInUser]);
+  }, [dispatch, loggedInUser, selectedMonth, selectedYear]);
 
   let selectedYr = moment(selectedYear).year();
   let dayDiv = [];
