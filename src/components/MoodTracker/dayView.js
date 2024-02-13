@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import moment from "moment";
 import styled from "styled-components";
@@ -102,9 +102,6 @@ export const DayView = ({ selectedYear, selectedMonth, onDaySelect }) => {
   const userState = useSelector((state) => state.user);
   const { loggedInUser } = userState;
 
-if (dailyData?.length) {
-  console.log("*********Daily : ",moment(dailyData[0].timestamp).toLocaleString(), moment(dailyData[0].timestamp).date());
-}
   useEffect(() => {
     if (loggedInUser) {
       dispatch(getAllDaysMood({ token: loggedInUser.token, userId: loggedInUser._id, year: moment(selectedYear).year(), month: selectedMonth }));
@@ -117,8 +114,8 @@ if (dailyData?.length) {
   let daysInMonth = new Date(selectedYr, selectedMonth + 1, 0).getDate();
 
   if (
-    selectedYr == moment(new Date()).year() &&
-    selectedMonth == moment(new Date()).month()
+    selectedYr === moment(new Date()).year() &&
+    selectedMonth === moment(new Date()).month()
   ) {
     daysInMonth = moment(new Date()).date();
   }
