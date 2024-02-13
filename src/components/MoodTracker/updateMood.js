@@ -70,7 +70,7 @@ const UpdateMood = (props) => {
     if (props.rating) {
       setRating(props.rating);
     }
-  }, []);
+  }, [props.notes, props.rating]);
 
   const userState = useSelector((state) => state.user);
   const { loggedInUser } = userState;
