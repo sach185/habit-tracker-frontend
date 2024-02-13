@@ -119,6 +119,7 @@ const Header = () => {
           <Logo src="/logo.svg" alt="logo" />
         </LogoLink>
         <MyLink to="/">Home</MyLink>
+        <MyLink to="/mood">Mood Tracker</MyLink>
         <RightDiv>
           {loggedInUser && <MyLink to="/habits">My Habits</MyLink>}
           {!loggedInUser ? (

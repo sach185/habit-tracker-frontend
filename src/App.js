@@ -6,6 +6,7 @@ import Header from "components/Header";
 import styled from "styled-components";
 import Login from "components/User/Login";
 import Register from "components/User/Register";
+import MoodTracker from "components/MoodTracker";
 
 const Footer = styled.div`
   min-height: 200px;
@@ -44,6 +45,8 @@ function App() {
               <Route path="/habits" element={<MyGoals />} exact />
               <Route path="/login" element={<Login />} exact />
               <Route path="/register" element={<Register />} />
+
+              <Route path="/mood" element={<MoodTracker />} exact />
             </Routes>
           </InnerRoot>
         </BodyRoot>
