@@ -20,7 +20,7 @@ const InnerRoot = styled.div`
   display: flex;
   flex-wrap: wrap;
   max-width: 1000px;
-
+  justify-content: center;
   @media only screen and (max-width: 699px) {
   }
 
@@ -60,12 +60,26 @@ const RatingBody = styled.div`
   justify-content: center;
 `;
 
+const RatingText = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  margin-bottom: 4px;
+`;
+
+
 const MonthRating = styled.img`
   width: 80px;
   height: 80px;
+
+  @media only screen and (max-width: 699px) {
+    width: 60px;
+  height: 60px;
+  }
 `;
 
-export const MonthView = ({ selectedYear, onMonthSelect }) => {
+export const MonthView = ({ selectedYear, onMonthSelect, monthlyData }) => {
   const months = [
     "January",
     "February",
@@ -89,13 +103,25 @@ export const MonthView = ({ selectedYear, onMonthSelect }) => {
 
   let monthDiv = [];
 
+
   for (let i = 0; i <= currentMonth; i++) {
+
+    let rating = 0;
+
+    if (monthlyData?.length) {
+      const currentElement = monthlyData.find((obj) => obj.month === i);
+      if (currentElement) {
+        rating = Math.ceil(currentElement.avgRating);
+      }
+    }
+
     monthDiv.push(
       <MonthBox
         key={i}
         month={months[i]}
         onMonthSelect={onMonthSelect}
         monthNo={i}
+        rating={rating}
       />
     );
   }
@@ -117,32 +143,38 @@ const MonthBox = ({ month, rating = 0, onMonthSelect, monthNo }) => {
   let src = "";
   let bgColor = "#DDDAC2";
   let color = "white";
+  let ratingText = "Add some ratings!"
 
   switch (rating) {
     case 1:
       src = "/icons/very_sad.png";
       bgColor = "#FF1A1A";
       color = "white";
+      ratingText = "Very sad!";
       break;
     case 2:
       src = "/icons/sad.png";
       bgColor = "#EDA284";
       color = "white";
+      ratingText = "Sad";
       break;
     case 3:
       src = "/icons/neutral.png";
       bgColor = "#FFAA33";
       color = "white";
+      ratingText = "Neutral";
       break;
     case 4:
       src = "/icons/happy.png";
       bgColor = "#4DBFC5";
       color = "white";
+      ratingText = "Happy";
       break;
     case 5:
       src = "/icons/very_happy.png";
       bgColor = "#E97D92";
       color = "white";
+      ratingText = "Very happy!";
       break;
     default:
       src = "/icons/zipped_face.png";
@@ -159,6 +191,9 @@ const MonthBox = ({ month, rating = 0, onMonthSelect, monthNo }) => {
       <RatingBody>
         <MonthRating src={src} alt="mood" />
       </RatingBody>
+      <RatingText>
+        {ratingText}
+      </RatingText>
     </MonthDiv>
   );
 };

@@ -96,7 +96,19 @@ const HeaderSpan = styled.span`
   font-weight: 600;
 
   @media only screen and (max-width: 699px) {
-    font-size: 17px;
+    font-size: 16px;
+    padding: 0px 45px;
+  }
+`;
+
+const RatingText = styled.span`
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 10px;
+
+  @media only screen and (max-width: 699px) {
+    font-size: 16px;
+    padding: 0px 45px;
   }
 `;
 
@@ -110,7 +122,7 @@ const MoodTracker = (props) => {
 
   const [notes, setNotes] = useState("");
   const [rating, setRating] = useState(0);
-
+  const [moodId, setMoodId] = useState(null);
 
   const dispatch = useDispatch();
   const moodState = useSelector((state) => state.mood);
@@ -119,14 +131,23 @@ const MoodTracker = (props) => {
   const userState = useSelector((state) => state.user);
   const { loggedInUser } = userState;
 
-  console.log("******** yearData : ", yearData);
-  console.log("******** monthlyData : ", monthlyData);
-
   useEffect(() => {
     if (loggedInUser) {
       //dispatch action to get year data
-      dispatch(getCurrentYearMood({ token: loggedInUser.token, userId: loggedInUser._id, year: moment(startDate).format("yyyy") }));
-      dispatch(getAllMonthsMood({ token: loggedInUser.token, userId: loggedInUser._id, year: moment(startDate).format("yyyy") }));
+      dispatch(
+        getCurrentYearMood({
+          token: loggedInUser.token,
+          userId: loggedInUser._id,
+          year: moment(startDate).format("yyyy"),
+        })
+      );
+      dispatch(
+        getAllMonthsMood({
+          token: loggedInUser.token,
+          userId: loggedInUser._id,
+          year: moment(startDate).format("yyyy"),
+        })
+      );
     }
   }, [dispatch, startDate, loggedInUser]);
 
@@ -148,18 +169,38 @@ const MoodTracker = (props) => {
     setUpdateView(false);
   };
 
-  const onDaySelect = (day, rating = 0, notes = "") => {
+  const onDaySelect = (day, rating = 0, notes = "", id) => {
     setMonthView(false);
     setDayView(false);
     setSelectedDay(day);
     setUpdateView(true);
     setNotes(notes);
     setRating(rating);
+    setMoodId(id);
   };
 
   const handleUpdate = () => {
-    onMonthSelect(selectedMonth);
-  }
+    setTimeout(() => {
+      onMonthSelect(selectedMonth);
+    }, 500);
+
+    setTimeout(() => {
+      dispatch(
+        getCurrentYearMood({
+          token: loggedInUser.token,
+          userId: loggedInUser._id,
+          year: moment(startDate).format("yyyy"),
+        })
+      );
+      dispatch(
+        getAllMonthsMood({
+          token: loggedInUser.token,
+          userId: loggedInUser._id,
+          year: moment(startDate).format("yyyy"),
+        })
+      );
+    }, 2000);
+  };
 
   const currentYear = new Date().getFullYear();
   const minDate = new Date(2024, 0, 1);
@@ -179,6 +220,30 @@ const MoodTracker = (props) => {
   };
 
   let showYear = !isDayView && !isUpdateView;
+
+  let yearRatingText = "";
+  if (yearData && yearData.avgRating) {
+    let yearRating = Math.ceil(yearData.avgRating);
+    switch (yearRating) {
+      case 1:
+        yearRatingText = "You had a very sad year so far ='(";
+        break;
+      case 2:
+        yearRatingText = "You had a sad year so far :(";
+        break;
+      case 3:
+        yearRatingText = "You had an ok-ok year so far";
+        break;
+      case 4:
+        yearRatingText = "You had a happy year so far :)";
+        break;
+      case 5:
+        yearRatingText = "You had a very happy year so far! =D";
+        break;
+      default:
+        break;
+    }
+  }
 
   return (
     <Root>
@@ -214,10 +279,19 @@ const MoodTracker = (props) => {
           ).format("dddd DD MMM yyyy")}`}</HeaderSpan>
         )}
       </YearItem>
+      {yearRatingText && showYear && (
+        <YearItem>
+          <RatingText>{yearRatingText}</RatingText>
+        </YearItem>
+      )}
 
       <InfoParent>
         {isMonthView && (
-          <MonthView selectedYear={startDate} onMonthSelect={onMonthSelect} />
+          <MonthView
+            selectedYear={startDate}
+            onMonthSelect={onMonthSelect}
+            monthlyData={monthlyData}
+          />
         )}
         {isDayView && (
           <DayView
@@ -228,10 +302,13 @@ const MoodTracker = (props) => {
         )}
         {isUpdateView && (
           <UpdateMood
-            date={new Date(moment(startDate).year(), selectedMonth, selectedDay)}
+            date={
+              new Date(moment(startDate).year(), selectedMonth, selectedDay)
+            }
             onUpdate={handleUpdate}
             notes={notes}
             rating={rating}
+            moodId={moodId}
           />
         )}
       </InfoParent>

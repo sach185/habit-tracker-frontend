@@ -40,7 +40,7 @@ const DayDiv = styled.div`
   cursor: pointer;
 
   @media only screen and (max-width: 699px) {
-    width: 25%;
+    width: 42%;
   }
 `;
 
@@ -89,10 +89,19 @@ const DayRating = styled.img`
   height: 80px;
 
   @media only screen and (max-width: 699px) {
-    width: 30px;
-    height: 30px;
+    width: 50px;
+    height: 50px;
   }
 `;
+
+const RatingText = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  margin-bottom: 4px;
+`;
+
 
 export const DayView = ({ selectedYear, selectedMonth, onDaySelect }) => {
   const dispatch = useDispatch();
@@ -124,12 +133,14 @@ export const DayView = ({ selectedYear, selectedMonth, onDaySelect }) => {
     const date = new Date(selectedYr, selectedMonth, day);
     let rating = 0;
     let notes = "";
+    let id = null;
 
     if (dailyData?.length) {
       const currentElement = dailyData.find((obj) => moment(obj.timestamp).date() === day);
       if (currentElement) {
         rating = currentElement.rating;
         notes = currentElement.notes;
+        id = currentElement._id;
       }
     }
     
@@ -141,6 +152,7 @@ export const DayView = ({ selectedYear, selectedMonth, onDaySelect }) => {
         rating={rating}
         dayNo={moment(date).format("DD")}
         notes={notes}
+        moodId={id}
       />
     );
   }
@@ -158,36 +170,42 @@ const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(DayView);
 
-const DayBox = ({ day, rating = 0, onDaySelect, dayNo, notes }) => {
+const DayBox = ({ day, rating = 0, onDaySelect, dayNo, notes, moodId }) => {
   let src = "";
   let bgColor = "#DDDAC2";
   let color = "white";
+  let ratingText = "Add some ratings!"
 
   switch (rating) {
     case 1:
       src = "/icons/very_sad.png";
       bgColor = "#FF1A1A";
       color = "white";
+      ratingText = "Very sad!";
       break;
     case 2:
       src = "/icons/sad.png";
       bgColor = "#EDA284";
       color = "white";
+      ratingText = "Sad";
       break;
     case 3:
       src = "/icons/neutral.png";
       bgColor = "#FFAA33";
       color = "white";
+      ratingText = "Neutral";
       break;
     case 4:
       src = "/icons/happy.png";
       bgColor = "#4DBFC5";
       color = "white";
+      ratingText = "Happy";
       break;
     case 5:
       src = "/icons/very_happy.png";
       bgColor = "#E97D92";
       color = "white";
+      ratingText = "Very happy!";
       break;
     default:
       src = "/icons/zipped_face.png";
@@ -197,7 +215,7 @@ const DayBox = ({ day, rating = 0, onDaySelect, dayNo, notes }) => {
   }
 
   return (
-    <DayDiv onClick={() => onDaySelect(dayNo, rating, notes)} className="day-box">
+    <DayDiv onClick={() => onDaySelect(dayNo, rating, notes, moodId)} className="day-box">
       <DayTitle bgColor={bgColor} color={color}>
         {day}
       </DayTitle>
@@ -207,6 +225,9 @@ const DayBox = ({ day, rating = 0, onDaySelect, dayNo, notes }) => {
       <RatingBody>
         <DayRating src={src} alt="mood" />
       </RatingBody>
+      <RatingText>
+        {ratingText}
+      </RatingText>
     </DayDiv>
   );
 };

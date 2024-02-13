@@ -45,7 +45,6 @@ function App() {
               <Route path="/habits" element={<MyGoals />} exact />
               <Route path="/login" element={<Login />} exact />
               <Route path="/register" element={<Register />} />
-
               <Route path="/mood" element={<MoodTracker />} exact />
             </Routes>
           </InnerRoot>

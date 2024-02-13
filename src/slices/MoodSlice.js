@@ -17,7 +17,9 @@ export const getAllDaysMood = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await Axios.get(
-        `${SERVER_URL}/mood/daily-mood/${payload.userId}/${payload.year}/${payload.month + 1}`,
+        `${SERVER_URL}/mood/daily-mood/${payload.userId}/${payload.year}/${
+          payload.month + 1
+        }`,
         {
           headers: { Authorization: "Bearer " + payload.token },
         }
@@ -137,10 +139,8 @@ const moodSlice = createSlice({
       }
     },
     [getCurrentYearMood.fulfilled]: (state, action) => {
-      if (state.loading === "pending") {
-        state.loading = "idle";
-        state.yearData = action.payload.data;
-      }
+      state.loading = "idle";
+      state.yearData = action.payload.data;
     },
     [getCurrentYearMood.rejected]: (state, action) => {
       if (state.loading === "pending") {

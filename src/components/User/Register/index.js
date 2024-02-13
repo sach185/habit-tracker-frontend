@@ -173,7 +173,7 @@ const Register = () => {
   useEffect(() => {
     if (loggedInUser) {
       //redirect on successful registration
-      navigate("/habits");
+      navigate("/");
     }
   }, [loggedInUser, navigate]);
 

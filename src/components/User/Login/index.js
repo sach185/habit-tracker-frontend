@@ -145,7 +145,7 @@ const Login = () => {
   useEffect(() => {
     if (loggedInUser) {
       // redirect on login
-      navigate("/habits");
+      navigate("/");
     }
   }, [loggedInUser, navigate]);
 

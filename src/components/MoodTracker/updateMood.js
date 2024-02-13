@@ -35,6 +35,10 @@ const TextAreaItem = styled.textarea`
 font-size: 15px;
 width: 50%;
 height: 300px;
+
+@media only screen and (max-width: 699px) {
+  width: 80%;
+  }
 `;
 
 const RatingDiv = styled.div`
@@ -50,7 +54,6 @@ font-weight: 500;
 padding: 4px 0px;
 `;
 
-
 const SelectItem = styled.select`
 width: 200px;
 font-size: 15px;
@@ -61,6 +64,7 @@ const UpdateMood = (props) => {
   // State for notes and rating
   const [notes, setNotes] = useState("");
   const [rating, setRating] = useState(0);
+  const [moodId, setMoodId] = useState(null);
 
   useEffect(() => {
     if (props.notes) {
@@ -70,7 +74,11 @@ const UpdateMood = (props) => {
     if (props.rating) {
       setRating(props.rating);
     }
-  }, [props.notes, props.rating]);
+
+    if (props.moodId) {
+      setMoodId(props.moodId);
+    }
+  }, [props.notes, props.rating, props.moodId]);
 
   const userState = useSelector((state) => state.user);
   const { loggedInUser } = userState;
@@ -96,7 +104,8 @@ const UpdateMood = (props) => {
       rating,
       notes,
       date: isoDateString,
-      userId: loggedInUser._id
+      userId: loggedInUser._id,
+      moodId: moodId
     };
 
     if (props.isUpdate) {

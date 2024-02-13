@@ -79,6 +79,7 @@ const ChildItem = styled.div`
 
 const InfoParent = styled.div`
   display: flex;
+  justify-content: center;
   @media only screen and (max-width: 699px) {
     flex-direction: column;
     margin-top: 30px;
@@ -110,11 +111,23 @@ const ImageItem = styled.img`
 const Welcome = (props) => {
   return (
     <Root>
-      <HeaderItem>A Simple and Beautiful Habit Tracker</HeaderItem>
-      <HeaderChildItem>Form new habits to achieve your goals</HeaderChildItem>
+      <HeaderItem>A Simple and Beautiful Tracker for your Moods and Habits</HeaderItem>
 
       <InfoParent>
-        <InfoChild>
+      <InfoChild>
+          <ImageItem src="/red-heart-icon.svg" alt="heart" />
+          <ParentItem>Happy Valentines!</ParentItem>
+          <ChildItem>
+            I love you
+          </ChildItem>
+          <ChildItem>
+            I know this is not the best and needs more work just like me and our relationship. But I promise to work on both!
+          </ChildItem>
+          <ChildItem>
+            Now click on the mood tracker and get started!
+          </ChildItem>
+        </InfoChild>
+        {/* <InfoChild>
           <ImageItem src="/newgoal.svg" alt="new-goal" />
           <ParentItem>Start a new goal</ParentItem>
           <ChildItem>
@@ -137,7 +150,7 @@ const Welcome = (props) => {
           <ChildItem>
             Unlock more goal slots as and when you finish your ongoing tasks
           </ChildItem>
-        </InfoChild>
+        </InfoChild> */}
       </InfoParent>
     </Root>
   );
