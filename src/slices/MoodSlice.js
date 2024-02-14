@@ -122,10 +122,8 @@ const moodSlice = createSlice({
       }
     },
     [getAllMonthsMood.fulfilled]: (state, action) => {
-      if (state.loading === "pending") {
-        state.loading = "idle";
-        state.monthlyData = [...action.payload.data];
-      }
+      state.loading = "idle";
+      state.monthlyData = [...action.payload.data];
     },
     [getAllMonthsMood.rejected]: (state, action) => {
       if (state.loading === "pending") {

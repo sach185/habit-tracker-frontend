@@ -107,7 +107,7 @@ export const MonthView = ({ selectedYear, onMonthSelect, monthlyData }) => {
   for (let i = 0; i <= currentMonth; i++) {
 
     let rating = 0;
-    console.log('***', monthlyData);
+  
     if (monthlyData?.length) {
       const currentElement = monthlyData.find((obj) => obj.month === i);
       if (currentElement) {
