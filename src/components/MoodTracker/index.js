@@ -290,7 +290,7 @@ const MoodTracker = (props) => {
           <MonthView
             selectedYear={startDate}
             onMonthSelect={onMonthSelect}
-            monthlyData={monthlyData}
+            monthlyData={[...monthlyData]}
           />
         )}
         {isDayView && (

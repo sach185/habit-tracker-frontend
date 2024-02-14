@@ -38,6 +38,7 @@ height: 300px;
 
 @media only screen and (max-width: 699px) {
   width: 80%;
+  height: 200px;
   }
 `;
 
