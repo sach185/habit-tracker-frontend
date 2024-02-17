@@ -117,15 +117,7 @@ const Welcome = (props) => {
       <InfoChild>
           <ImageItem src="/red-heart-icon.svg" alt="heart" />
           <ParentItem>Happy Valentines!</ParentItem>
-          <ChildItem>
-            I love you
-          </ChildItem>
-          <ChildItem>
-            I know this is not the best and needs more work just like me and our relationship. But I promise to work on both!
-          </ChildItem>
-          <ChildItem>
-            Now click on the mood tracker and get started!
-          </ChildItem>
+       
         </InfoChild>
         {/* <InfoChild>
           <ImageItem src="/newgoal.svg" alt="new-goal" />
